@@ -1,25 +1,10 @@
-# Dynamic Generated
-Platforms/SurfaceDuoFamilyPkg/Include/Resources/ReleaseInfo.h
-Platforms/SurfaceDuoFamilyPkg/Include/Generated/
-Platforms/SurfaceDuo1Pkg/Include/Resources/ReleaseInfo.h
-Platforms/SurfaceDuo2Pkg/Include/Resources/ReleaseInfo.h
-
-Silicon/QC/Sdm845/QcomPkg/Include/Configuration/DeviceConfigurationMap.h
-Silicon/QC/Sm7125/QcomPkg/Include/Configuration/DeviceConfigurationMap.h
-Silicon/QC/Sm7325/QcomPkg/Include/Configuration/DeviceConfigurationMap.h
-Silicon/QC/Sm8150/QcomPkg/Include/Configuration/DeviceConfigurationMap.h
-Silicon/QC/Sm8550/QcomPkg/Include/Configuration/DeviceConfigurationMap.h
-
-
 # Local
 .DS_Store
 .vs
 .vscode
-.img
-scripts/padding
+.venv
 
 /Build/
-.DS_Store
 *_extdep/
 *.pyc
 __pycache__/
@@ -27,32 +12,29 @@ tags/
 .vscode/
 *.bak
 BuildConfig.conf
-uefi_*.img
-android-boot.img
 
 /Conf/
 /SurfaceDuo/
+Platforms/AndromedaPkg/Include/Generated/ConfigServiceGenerated.h
+Platforms/AndromedaPkg/Include/Generated/ConfigDataGenerated.h
+Platforms/AndromedaPkg/Include/Generated/ConfigClientGenerated.h
 
-# IDA Pro Runtime temporary file
-*.id0
-*.id1
-*.id2
-*.nam
-*.til
-
-# IDA Pro 64 packaged data
-*.i64
-# IDA Pro 32 packaged data
-*.idb
-
-Platforms/SurfaceDuoFamilyPkg/Include/Generated/ConfigServiceGenerated.h
-Platforms/SurfaceDuoFamilyPkg/Include/Generated/ConfigDataGenerated.h
-Platforms/SurfaceDuoFamilyPkg/Include/Generated/ConfigClientGenerated.h
-ImageResources/Zeta/uefi.img
-ImageResources/Zeta/bootpayload.bin
-ImageResources/Epsilon/uefi.img
 ImageResources/Epsilon/bootpayload.bin
-ImageResources/Zeta/uefi_dualboot.img
-ImageResources/Zeta/dualbootbootpayload.bin
-ImageResources/Epsilon/uefi_dualboot.img
 ImageResources/Epsilon/dualbootbootpayload.bin
+ImageResources/Epsilon/SM8150_EFI_NOSB.fd
+ImageResources/Epsilon/SM8150_EFI.fd
+ImageResources/Epsilon/uefi_dualboot.img
+ImageResources/Epsilon/uefi_nosb.img
+ImageResources/Epsilon/uefi_nosb.payload.bin
+ImageResources/Epsilon/uefi.img
+ImageResources/Epsilon/uefi.payload.bin
+
+ImageResources/Zeta/bootpayload.bin
+ImageResources/Zeta/dualbootbootpayload.bin
+ImageResources/Zeta/SM8350_EFI_NOSB.fd
+ImageResources/Zeta/SM8350_EFI.fd
+ImageResources/Zeta/uefi_dualboot.img
+ImageResources/Zeta/uefi_nosb.img
+ImageResources/Zeta/uefi_nosb.payload.bin
+ImageResources/Zeta/uefi.img
+ImageResources/Zeta/uefi.payload.bin

@@ -21,11 +21,11 @@
 ################################################################################
 
 [FD.SM7325_EFI]
-BaseAddress   = 0x9F000000|gArmTokenSpaceGuid.PcdFdBaseAddress #The base address of the FLASH Device.
-Size          = 0x00500000|gArmTokenSpaceGuid.PcdFdSize        #The size in bytes of the FLASH Device
+BaseAddress   = 0x9FC41000|gArmTokenSpaceGuid.PcdFdBaseAddress #The base address of the FLASH Device.
+Size          = 0x002BF000|gArmTokenSpaceGuid.PcdFdSize        #The size in bytes of the FLASH Device
 ErasePolarity = 1
 BlockSize     = 0x1000
-NumBlocks     = 0x500
+NumBlocks     = 0x2BF
 
 ################################################################################
 #
@@ -42,7 +42,7 @@ NumBlocks     = 0x500
 # RegionType <FV, DATA, or FILE>
 #
 ################################################################################
-0x00000000|0x00500000
+0x00000000|0x002BF000
 gArmTokenSpaceGuid.PcdFvBaseAddress|gArmTokenSpaceGuid.PcdFvSize
 FV = FVMAIN_COMPACT
 
@@ -81,18 +81,10 @@ READ_LOCK_STATUS   = TRUE
   !include KodiakPkg/Device/$(TARGET_DEVICE)/APRIORI.inc
   !include KodiakPkg/Device/$(TARGET_DEVICE)/DXE.inc
 
-  # Debug heartbeat
-!if $(SEND_HEARTBEAT_TO_SERIAL) == 1
-  INF SurfaceDuoFamilyPkg/Driver/HeartbeatDxe/HeartbeatDxe.inf
-!endif
-
   # Secure Boot Key Enroll
-  !if $(SECURE_BOOT_ENABLE) == 1
-    INF SurfaceDuoFamilyPkg/Driver/SecureBootProvisioningDxe/SecureBootProvisioningDxe.inf
-  !endif
+  INF AndromedaPkg/Driver/SecureBootProvisioningDxe/SecureBootProvisioningDxe.inf
 
-  INF SurfaceDuoFamilyPkg/Driver/SystemIntegrityPolicyProvisioningDxe/SystemIntegrityPolicyProvisioningDxe.inf
-
+  INF AndromedaPkg/Driver/GpioButtons/GpioButtons.inf
   INF EmbeddedPkg/Drivers/VirtualKeyboardDxe/VirtualKeyboardDxe.inf
 
   # BDS
@@ -114,7 +106,7 @@ READ_LOCK_STATUS   = TRUE
   # ACPI and SMBIOS
   INF MdeModulePkg/Universal/Acpi/AcpiTableDxe/AcpiTableDxe.inf
   INF MdeModulePkg/Universal/Acpi/AcpiPlatformDxe/AcpiPlatformDxe.inf
-  INF SurfaceDuoFamilyPkg/Driver/SmBiosTableDxe/SmBiosTableDxe.inf
+  INF AndromedaPkg/Driver/SmBiosTableDxe/SmBiosTableDxe.inf
 
   # ACPI Tables
   !include KodiakPkg/Include/ACPI.inc
@@ -125,7 +117,7 @@ READ_LOCK_STATUS   = TRUE
 
   INF MdeModulePkg/Universal/EsrtFmpDxe/EsrtFmpDxe.inf
 
-  !include SurfaceDuoFamilyPkg/Frontpage.fdf.inc
+  !include AndromedaPkg/Frontpage.fdf.inc
 
   FILE FREEFORM = PCD(gMsCorePkgTokenSpaceGuid.PcdRegulatoryGraphicFileGuid) {
     SECTION RAW = KodiakPkg/Include/Resources/RegulatoryLogos.png
@@ -133,7 +125,6 @@ READ_LOCK_STATUS   = TRUE
 
   INF AdvLoggerPkg/AdvancedFileLogger/AdvancedFileLogger.inf
   INF ArmPkg/Drivers/ArmGic/ArmGicDxe.inf
-  INF ArmPkg/Drivers/ArmPsciMpServicesDxe/ArmPsciMpServicesDxe.inf
   INF ArmPkg/Drivers/CpuDxe/CpuDxe.inf
   INF ArmPkg/Drivers/TimerDxe/TimerDxe.inf
   INF EmbeddedPkg/MetronomeDxe/MetronomeDxe.inf
@@ -161,12 +152,7 @@ READ_LOCK_STATUS   = TRUE
   INF MdeModulePkg/Universal/ReportStatusCodeRouter/RuntimeDxe/ReportStatusCodeRouterRuntimeDxe.inf
   INF MdeModulePkg/Universal/SecurityStubDxe/SecurityStubDxe.inf
   INF MdeModulePkg/Universal/StatusCodeHandler/RuntimeDxe/StatusCodeHandlerRuntimeDxe.inf
-#  INF MdeModulePkg/Universal/Variable/RuntimeDxe/VariableRuntimeDxe.inf
-  FILE DRIVER = CBD2E4D5-7068-4FF5-B462-9822B4AD8D60 {
-    SECTION PE32 = SurfaceDuoFamilyPkg/Binaries/VariableRuntimeDxe.efi
-    SECTION DXE_DEPEX_EXP = {gEfiPcdProtocolGuid AND gEfiDevicePathUtilitiesProtocolGuid}
-    SECTION UI = "VariableRuntimeDxe"
-  }
+  INF MdeModulePkg/Universal/Variable/RuntimeDxe/VariableRuntimeDxe.inf
   INF MdeModulePkg/Universal/WatchdogTimerDxe/WatchdogTimer.inf
   # INF NetworkPkg/ArpDxe/ArpDxe.inf
   # INF NetworkPkg/Dhcp4Dxe/Dhcp4Dxe.inf
@@ -187,9 +173,10 @@ READ_LOCK_STATUS   = TRUE
   # INF NetworkPkg/Udp6Dxe/Udp6Dxe.inf
   # INF NetworkPkg/UefiPxeBcDxe/UefiPxeBcDxe.inf
   # INF NetworkPkg/VlanConfigDxe/VlanConfigDxe.inf
-  # INF SurfaceDuoFamilyPkg/Driver/ColorbarsDxe/ColorbarsDxe.inf
-  # INF SurfaceDuoFamilyPkg/Driver/SurfaceFirmwareProvisioningDataDxe/SurfaceFirmwareProvisioningDataDxe.inf
-  # INF SurfaceDuoFamilyPkg/UFP/ufpdevicefw.inf
+
+  INF AndromedaPkg/UFP/ufpdevicefw.inf
+
+  INF QcomModulePkg/Application/LinuxLoader/LinuxLoader.inf
 
 [FV.FVMAIN_COMPACT]
 FvAlignment        = 8
@@ -209,7 +196,7 @@ READ_STATUS        = TRUE
 READ_LOCK_CAP      = TRUE
 READ_LOCK_STATUS   = TRUE
 
-  INF SurfaceDuoFamilyPkg/PrePi/PeiUniCore.inf
+  INF AndromedaPkg/PrePi/PeiUniCore.inf
 
   FILE FREEFORM = dde58710-41cd-4306-dbfb-3fa90bb1d2dd {
     SECTION UI = "uefiplat.cfg"
@@ -222,4 +209,4 @@ READ_LOCK_STATUS   = TRUE
     }
   }
 
-  !include SurfaceDuoFamilyPkg/SurfaceDuoFamily.fdf.inc
+  !include AndromedaPkg/Andromeda.fdf.inc

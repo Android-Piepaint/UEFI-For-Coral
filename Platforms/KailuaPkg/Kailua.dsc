@@ -25,31 +25,25 @@
   SKUID_IDENTIFIER               = DEFAULT
   PACKAGE_NAME                   = $(PLATFORM_NAME)Pkg
   FLASH_DEFINITION               = $(PACKAGE_NAME)/$(PLATFORM_NAME).fdf
-
-  # Notice: TRUE == 1, FALSE == 0
-!if $(SEC_BOOT) == 1
-  SECURE_BOOT_ENABLE             = TRUE
-  DEFAULT_KEYS                   = TRUE
-!else
-  SECURE_BOOT_ENABLE             = FALSE
-  DEFAULT_KEYS                   = FALSE
-!endif
-
+  SECURE_BOOT                    = 1
   USE_PHYSICAL_TIMER             = 0
-  USE_SCREEN_FOR_SERIAL_OUTPUT   = 1
-  USE_MEMORY_FOR_SERIAL_OUTPUT   = 0
-  SEND_HEARTBEAT_TO_SERIAL       = 0
-  USE_UART_FOR_SERIAL_OUTPUT     = 0
 
-  PK_DEFAULT_FILE                = SurfaceDuoFamilyPkg/Include/Resources/SecureBoot/keystore/OEMA0-PK.der
-  KEK_DEFAULT_FILE1              = SurfaceDuoFamilyPkg/Include/Resources/SecureBoot/keystore/Kek/MicCorKEKCA2011_2011-06-24.der
-  KEK_DEFAULT_FILE2              = SurfaceDuoFamilyPkg/Include/Resources/SecureBoot/keystore/Kek/microsoft_corporation_kek_2k_ca_2023.der
-  KEK_DEFAULT_FILE3              = SurfaceDuoFamilyPkg/Include/Resources/SecureBoot/keystore/OEMA0-KEK.der
-  DB_DEFAULT_FILE1               = SurfaceDuoFamilyPkg/Include/Resources/SecureBoot/keystore/Db/MicWinProPCA2011_2011-10-19.der
-  DB_DEFAULT_FILE2               = SurfaceDuoFamilyPkg/Include/Resources/SecureBoot/keystore/Db/windows_uefi_ca_2023.der
-  DB_DEFAULT_FILE3               = SurfaceDuoFamilyPkg/Include/Resources/SecureBoot/keystore/Db/MicCorUEFCA2011_2011-06-27.der
-  DB_DEFAULT_FILE4               = SurfaceDuoFamilyPkg/Include/Resources/SecureBoot/keystore/Db/microsoft_uefi_ca_2023.der
-  DBX_DEFAULT_FILE1              = SurfaceDuoFamilyPkg/Include/Resources/SecureBoot/Artifacts/Aarch64/DefaultDbx.bin
+  USE_SCREEN_FOR_SERIAL_OUTPUT    = 0
+  USE_UART_GENI_FOR_SERIAL_OUTPUT = 0
+  USE_UART_DM_FOR_SERIAL_OUTPUT   = 0
+  USE_MEMORY_FOR_SERIAL_OUTPUT    = 0
+
+  DEFAULT_KEYS                   = TRUE
+  PK_DEFAULT_FILE                = AndromedaPkg/Include/Resources/SecureBoot/keystore/WOAMSMNILE-PK.der
+  KEK_DEFAULT_FILE1              = AndromedaPkg/Include/Resources/SecureBoot/keystore/KEK/Certificates/MicCorKEKCA2011_2011-06-24.der
+  KEK_DEFAULT_FILE2              = AndromedaPkg/Include/Resources/SecureBoot/keystore/KEK/Certificates/microsoft_corporation_kek_2k_ca_2023.der
+  KEK_DEFAULT_FILE3              = AndromedaPkg/Include/Resources/SecureBoot/keystore/WOAMSMNILE-KEK.der
+  DB_DEFAULT_FILE1               = AndromedaPkg/Include/Resources/SecureBoot/keystore/DB/Certificates/MicWinProPCA2011_2011-10-19.der
+  DB_DEFAULT_FILE2               = AndromedaPkg/Include/Resources/SecureBoot/keystore/DB/Certificates/windows_uefi_ca_2023.der
+  DB_DEFAULT_FILE3               = AndromedaPkg/Include/Resources/SecureBoot/keystore/DB/Certificates/MicCorUEFCA2011_2011-06-27.der
+  DB_DEFAULT_FILE4               = AndromedaPkg/Include/Resources/SecureBoot/keystore/DB/Certificates/microsoft_uefi_ca_2023.der
+  DB_DEFAULT_FILE5               = AndromedaPkg/Include/Resources/SecureBoot/keystore/DB/Certificates/microsoft_option_rom_uefi_ca_2023.der
+  DBX_DEFAULT_FILE1              = AndromedaPkg/Include/Resources/SecureBoot/Artifacts/Aarch64/DefaultDbx.bin
 
   DXE_CRYPTO_SERVICES            = STANDARD
   PEI_CRYPTO_SERVICES            = NONE
@@ -62,11 +56,18 @@
   SMM_CRYPTO_ARCH                = NONE
   STANDALONEMM_CRYPTO_ARCH       = NONE
 
+  PLATFORM_HAS_ACTLR_EL1_UNIMPLEMENTED_ERRATA         = 1
+  PLATFORM_HAS_AMCNTENSET0_EL0_UNIMPLEMENTED_ERRATA   = 1
+  PLATFORM_HAS_GIC_V3_WITHOUT_IRM_FLAG_SUPPORT_ERRATA = 1
+  PLATFORM_HAS_PSCI_MEMPROTECT_FAILING_ERRATA         = 0
+
 !include $(PACKAGE_NAME)/Device/$(TARGET_DEVICE)/Defines.dsc.inc
 
 [PcdsFixedAtBuild.common]
   # Platform-specific
   gArmTokenSpaceGuid.PcdSystemMemorySize|0x300000000        # 12GB Size
+
+  gAndromedaPkgTokenSpaceGuid.PcdABLProduct|"kailua"
 
 #[PcdsDynamicDefault.common]
 #  gEfiMdeModulePkgTokenSpaceGuid.PcdVideoHorizontalResolution|1344
@@ -78,14 +79,17 @@
 #  gEfiMdeModulePkgTokenSpaceGuid.PcdConOutRow|99 # 99.57
 #  gEfiMdeModulePkgTokenSpaceGuid.PcdConOutColumn|168
 [Components.common]
-  SurfaceDuoFamilyPkg/Driver/SimpleFbDxe/SimpleFbDxe.inf
+  AndromedaPkg/Driver/SimpleFbDxe/SimpleFbDxe.inf
 
 [LibraryClasses.common]
   # Move PlatformMemoryMapLib form Silicon/QC/QCxxxx/Library to Device/<device>/Library
   PlatformMemoryMapLib|$(PACKAGE_NAME)/Device/$(TARGET_DEVICE)/Library/PlatformMemoryMapLib/PlatformMemoryMapLib.inf
 
+  # Move PlatformConfigurationMapLib form Silicon/QC/QCxxxx/Library to Device/<device>/Library/
+  PlatformConfigurationMapLib|$(PACKAGE_NAME)/Device/$(TARGET_DEVICE)/Library/PlatformConfigurationMapLib/PlatformConfigurationMapLib.inf
+
 !include $(PACKAGE_NAME)/Device/$(TARGET_DEVICE)/DXE.dsc.inc
 !include QcomPkg/QcomPkg.dsc.inc
 !include $(PACKAGE_NAME)/Device/$(TARGET_DEVICE)/PcdsFixedAtBuild.dsc.inc
-!include SurfaceDuoFamilyPkg/SurfaceDuoFamily.dsc.inc
-!include SurfaceDuoFamilyPkg/Frontpage.dsc.inc
+!include AndromedaPkg/Andromeda.dsc.inc
+!include AndromedaPkg/Frontpage.dsc.inc

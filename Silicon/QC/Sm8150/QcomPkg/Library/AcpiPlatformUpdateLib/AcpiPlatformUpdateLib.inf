@@ -20,8 +20,9 @@
   PcBdsPkg/PcBdsPkg.dec
   MsCorePkg/MsCorePkg.dec
   MdeModulePkg/MdeModulePkg.dec
-  SurfaceDuoFamilyPkg/SurfaceDuoFamilyPkg.dec
+  AndromedaPkg/AndromedaPkg.dec
   QcomPkg/QcomPkg.dec
+  QcomModulePkg/QcomModulePkg.dec
 
 [LibraryClasses]
   BaseMemoryLib
@@ -36,9 +37,9 @@
 
 [Protocols]
   gEfiChipInfoProtocolGuid                      ## CONSUMES
-  gEfiSMEMProtocolGuid                          ## CONSUMES
-  gEfiClockProtocolGuid                         ## CONSUMES
   gEfiPlatformInfoProtocolGuid                  ## CONSUMES
+  gEfiSMEMProtocolGuid                          ## CONSUMES
 
 [FixedPcd]
   gArmPlatformTokenSpaceGuid.PcdClusterCount
+  gAndromedaPkgTokenSpaceGuid.PcdStorageHasUFS3

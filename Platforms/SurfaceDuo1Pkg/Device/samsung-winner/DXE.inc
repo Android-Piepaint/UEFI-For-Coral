@@ -16,7 +16,7 @@ INF Cambria/BOOT.XF.3.0.1-00243-SC8180XWZB-2/QcomPkg/Drivers/UsbInitDxe/UsbInitD
 INF Cambria/BOOT.XF.3.0.1-00243-SC8180XWZB-2/QcomPkg/Drivers/UsbMsdDxe/UsbMsdDxe.inf
 INF Cambria/BOOT.XF.3.0.1-00243-SC8180XWZB-2/QcomPkg/Drivers/UsbPwrCtrlDxe/UsbPwrCtrlDxe.inf
 INF Cambria/BOOT.XF.3.0.1-00243-SC8180XWZB-2/QcomPkg/Drivers/XhciPciEmulationDxe/XhciPciEmulationDxe.inf
-INF SurfaceDuoFamilyPkg/Driver/SimpleFbDxe/SimpleFbDxe.inf
+INF AndromedaPkg/Driver/SimpleFbDxe/SimpleFbDxe.inf
 
 INF SurfaceDuo1Pkg/Device/$(TARGET_DEVICE)/Binaries/QcomPkg/Drivers/SamsungDxe/CcicDxe/CcicDxe.inf
 INF SurfaceDuo1Pkg/Device/$(TARGET_DEVICE)/Binaries/QcomPkg/Drivers/SamsungDxe/MuicDxe/MuicDxe.inf
@@ -68,7 +68,7 @@ INF SurfaceDuo1Pkg/Device/$(TARGET_DEVICE)/Binaries/QcomPkg/Drivers/RpmhDxe/Rpmh
 #INF SurfaceDuo1Pkg/Device/$(TARGET_DEVICE)/Binaries/QcomPkg/Drivers/CPRDxe/CPRDxe.inf
 INF SurfaceDuo1Pkg/Device/$(TARGET_DEVICE)/Binaries/QcomPkg/Drivers/PdcDxe/PdcDxe.inf
 #INF MdeModulePkg/Universal/Disk/DiskIoDxe/DiskIoDxe.inf
-#INF MdeModulePkg/Universal/Disk/PartitionDxe/PartitionDxe.inf
+#INF $(PACKAGE_NAME)/Device/$(TARGET_DEVICE)/Binaries/MdeModulePkg/Universal/Disk/PartitionDxe/PartitionDxe.inf
 #INF FatPkg/EnhancedFatDxe/Fat.inf
 #INF MdeModulePkg/Universal/Disk/UnicodeCollation/EnglishDxe/EnglishDxe.inf
 #INF MdeModulePkg/Universal/FvSimpleFileSystemDxe/FvSimpleFileSystemDxe.inf
@@ -87,9 +87,9 @@ INF SurfaceDuo1Pkg/Device/$(TARGET_DEVICE)/Binaries/QcomPkg/Drivers/PlatformInfo
 #INF SurfaceDuo1Pkg/Device/$(TARGET_DEVICE)/Binaries/QcomPkg/Drivers/ButtonsDxe/ButtonsDxe.inf
 INF SurfaceDuo1Pkg/Device/$(TARGET_DEVICE)/Binaries/QcomPkg/Drivers/PmicDxe/PmicDxeLa.inf
 #INF SurfaceDuo1Pkg/Device/$(TARGET_DEVICE)/Binaries/QcomPkg/Drivers/UsbPwrCtrlDxe/UsbPwrCtrlDxe.inf
-INF SurfaceDuo1Pkg/Device/qcom-qrd855/Binaries/QcomPkg/Drivers/ChargerExDxe/ChargerExDxe.inf
-INF SurfaceDuo1Pkg/Device/qcom-qrd855/Binaries/QcomPkg/Drivers/QcomChargerDxe/QcomChargerDxeLA.inf
-INF SurfaceDuo1Pkg/Device/qcom-qrd855/Binaries/QcomPkg/Application/QcomChargerApp/QcomChargerApp.inf
+INF SurfaceDuo1Pkg/Device/qcom-qrd8150/Binaries/QcomPkg/Drivers/ChargerExDxe/ChargerExDxe.inf
+INF SurfaceDuo1Pkg/Device/qcom-qrd8150/Binaries/QcomPkg/Drivers/QcomChargerDxe/QcomChargerDxeLA.inf
+INF SurfaceDuo1Pkg/Device/qcom-qrd8150/Binaries/QcomPkg/Application/QcomChargerApp/QcomChargerApp.inf
 INF SurfaceDuo1Pkg/Device/$(TARGET_DEVICE)/Binaries/QcomPkg/Drivers/AdcDxe/AdcDxe.inf
 INF SurfaceDuo1Pkg/Device/$(TARGET_DEVICE)/Binaries/QcomPkg/Drivers/TsensDxe/TsensDxe.inf
 #INF QcomPkg/Drivers/LimitsDxe/LimitsDxe.inf
@@ -153,7 +153,7 @@ FILE DRIVER = b0d3689e-11f8-43c6-8ece-023a29cec35b {
 #}
 #
 #FILE DRIVER = C2F9A4F5-F7B4-43E7-BA99-5EA804CC103A {
-#    SECTION PE32 = SurfaceDuo1Pkg/Device/$(TARGET_DEVICE)/Binaries/QcomPkg/Drivers/ASN1X509Dxe/ASN1X509Dxe.inf
+#    SECTION PE32 = SurfaceDuo1Pkg/Device/$(TARGET_DEVICE)/Binaries/QcomPkg/Drivers/ASN1X509Dxe/ASN1X509Dxe.efi
 #    SECTION UI = "ASN1X509Dxe"
 #}
 
@@ -281,7 +281,7 @@ FILE FREEFORM = A1E235DE-E825-4591-9623-C43175811826 {
 
 FILE FREEFORM = 45FE4B7C-150C-45DA-A021-4BEB2048EC6F {
     SECTION UI = "QcomChargerCfg.cfg"
-    SECTION RAW = SurfaceDuo1Pkg/Device/qcom-qrd855/Binaries/RawFiles/QcomChargerCfg.cfg
+    SECTION RAW = SurfaceDuo1Pkg/Device/qcom-qrd8150/Binaries/RawFiles/QcomChargerCfg.cfg
 }
 
 

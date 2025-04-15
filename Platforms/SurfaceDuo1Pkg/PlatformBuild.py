@@ -92,6 +92,7 @@ class SettingsManager(UpdateSettingsManager, SetupSettingsManager, PrEvalSetting
             RequiredSubmodule("Features/CONFIG", True),
             RequiredSubmodule("Features/DFCI", True),
             RequiredSubmodule("MU_BASECORE", True),
+            RequiredSubmodule("Platforms/OpensslPkg/Library/OpensslLib/openssl", True),
             RequiredSubmodule("Platforms/SurfaceDuoACPI", True),
             RequiredSubmodule("Silicon/Arm/MU_TIANO", True),
         ]
@@ -248,7 +249,7 @@ class PlatformBuilder(UefiBuilder, BuildSettingsManager):
         self.env.SetValue("ACTIVE_PLATFORM", PackageName+"/"+PlatformName+".dsc", "Platform Hardcoded")
 ## woa-msmnile patch end
         self.env.SetValue("TARGET_ARCH", "AARCH64", "Platform Hardcoded")
-        self.env.SetValue("TOOL_CHAIN_TAG", "CLANGDWARF", "set default to clangdwarf")
+        self.env.SetValue("TOOL_CHAIN_TAG", "CLANGPDB", "set default to clangpdb")
         self.env.SetValue("EMPTY_DRIVE", "FALSE", "Default to false")
         self.env.SetValue("RUN_TESTS", "FALSE", "Default to false")
         self.env.SetValue("SHUTDOWN_AFTER_RUN", "FALSE", "Default to false")
@@ -260,16 +261,16 @@ class PlatformBuilder(UefiBuilder, BuildSettingsManager):
         self.env.SetValue("BLD_*_MEMORY_PROTECTION", "TRUE", "Default")
         # Include the MFCI test cert by default, override on the commandline with "BLD_*_SHIP_MODE=TRUE" if you want the retail MFCI cert
         self.env.SetValue("BLD_*_SHIP_MODE", "FALSE", "Default")
-        self.env.SetValue("CONF_AUTOGEN_INCLUDE_PATH", self.edk2path.GetAbsolutePathOnThisSystemFromEdk2RelativePath("Platforms", "SurfaceDuoFamilyPkg", "Include"), "Platform Defined")
-        self.env.SetValue("MU_SCHEMA_DIR", self.edk2path.GetAbsolutePathOnThisSystemFromEdk2RelativePath("Platforms", "SurfaceDuoFamilyPkg", "CfgData"), "Platform Defined")
-        self.env.SetValue("MU_SCHEMA_FILE_NAME", "SurfaceDuoFamilyPkgCfgData.xml", "Platform Hardcoded")
+        self.env.SetValue("CONF_AUTOGEN_INCLUDE_PATH", self.edk2path.GetAbsolutePathOnThisSystemFromEdk2RelativePath("Platforms", "AndromedaPkg", "Include"), "Platform Defined")
+        self.env.SetValue("MU_SCHEMA_DIR", self.edk2path.GetAbsolutePathOnThisSystemFromEdk2RelativePath("Platforms", "AndromedaPkg", "CfgData"), "Platform Defined")
+        self.env.SetValue("MU_SCHEMA_FILE_NAME", "AndromedaPkgCfgData.xml", "Platform Hardcoded")
 ## woa-msmnile patch start
         # Ship Device Name
         self.env.SetValue("BLD_*_TARGET_DEVICE", self.env.GetValue("TARGET_DEVICE"), "Default")
-        self.env.SetValue("BLD_*_SEC_BOOT", self.env.GetValue("SEC_BOOT"), "Default")
         # Ship DTB Name
         self.env.SetValue("BLD_*_FDT", self.GetDTBName(), "Default")
 ## woa-msmnile patch end
+
         return 0
 
     def PlatformPreBuild(self):

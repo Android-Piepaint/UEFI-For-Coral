@@ -23,19 +23,20 @@
   MdePkg/MdePkg.dec
   MdeModulePkg/MdeModulePkg.dec
   EmbeddedPkg/EmbeddedPkg.dec
-  SurfaceDuoFamilyPkg/SurfaceDuoFamilyPkg.dec
+  AndromedaPkg/AndromedaPkg.dec
   QcomPkg/QcomPkg.dec
 
 [LibraryClasses]
   ArmLib
   ArmMmuLib
   BaseLib
+  ConfigurationMapHelperLib
   DebugLib
   HobLib
   IoLib
   MemoryAllocationLib
-  SerialPortLib
   MemoryMapHelperLib
+  SerialPortLib
 
 [FixedPcd]
   gArmTokenSpaceGuid.PcdFvSize

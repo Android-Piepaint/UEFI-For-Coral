@@ -9,16 +9,17 @@
 
   NOTICE:
     Some Addresses, Protocols, Functions and Guids are got from decompile tools.
+
 **/
+
 #include <PiPei.h>
 
 #include <Library/DebugLib.h>
 #include <Library/HobLib.h>
 #include <Library/MemoryAllocationLib.h>
 #include <Library/PcdLib.h>
-#include <Protocol/EFIKernelInterface.h>
+#include <Library/SecProtocolFinderLib.h>
 #include "PlatformPeiLibInternal.h"
-#include "EFIDTBExtnProtocol.h"
 
 STATIC
 EFI_STATUS
@@ -52,38 +53,14 @@ STATIC
 EFI_STATUS
 CfgGetCfgInfoVal(CHAR8 *Key, UINT32 *Value)
 {
-  PCONFIGURATION_DESCRIPTOR_EX ConfigurationDescriptorEx =
-      gDeviceConfigurationDescriptorEx;
-
-  // Run through each configuration descriptor
-  while (ConfigurationDescriptorEx->Value != 0xFFFFFFFF) {
-    if (AsciiStriCmp(Key, ConfigurationDescriptorEx->Name) == 0) {
-      *Value = (UINT32)(ConfigurationDescriptorEx->Value & 0xFFFFFFFF);
-      return EFI_SUCCESS;
-    }
-    ConfigurationDescriptorEx++;
-  }
-
-  return EFI_NOT_FOUND;
+  return LocateConfigurationMapUINT32ByName(Key, Value);
 }
 
 STATIC
 EFI_STATUS
 CfgGetCfgInfoVal64(CHAR8 *Key, UINT64 *Value)
 {
-  PCONFIGURATION_DESCRIPTOR_EX ConfigurationDescriptorEx =
-      gDeviceConfigurationDescriptorEx;
-
-  // Run through each configuration descriptor
-  while (ConfigurationDescriptorEx->Value != 0xFFFFFFFF) {
-    if (AsciiStriCmp(Key, ConfigurationDescriptorEx->Name) == 0) {
-      *Value = ConfigurationDescriptorEx->Value;
-      return EFI_SUCCESS;
-    }
-    ConfigurationDescriptorEx++;
-  }
-
-  return EFI_NOT_FOUND;
+  return LocateConfigurationMapUINT64ByName(Key, Value);
 }
 
 STATIC
@@ -162,8 +139,6 @@ VOID BuildMemHobForFv(IN UINT16 Type)
 STATIC GUID gEfiInfoBlkHobGuid   = EFI_INFORMATION_BLOCK_GUID;
 STATIC GUID gFvDecompressHobGuid = EFI_FV_DECOMPRESS_GUID;
 STATIC GUID gEfiShLibHobGuid     = EFI_SHIM_LIBRARY_GUID;
-STATIC GUID gEfiSchedIntfGuid    = EFI_SCHED_INTF_GUID;
-STATIC GUID gEfiSecDtbGuid       = EFI_SEC_DTB_GUID;
 
 VOID InstallPlatformHob()
 {
@@ -172,19 +147,20 @@ VOID InstallPlatformHob()
   if (!initialized) {
     ARM_MEMORY_REGION_DESCRIPTOR_EX InfoBlk;
     LocateMemoryMapAreaByName("Info Blk", &InfoBlk);
-    UINTN Data3 = 0xC5F27000; // FV2 Address
+    UINTN Data3 = 0xC7CC0000; // FV2 Address
     UINTN InfoBlkAddress = InfoBlk.Address;
     UINTN ShLibAddress   = (UINTN)&ShLib;
-    EFI_KERNEL_PROTOCOL   *SchedIntf       = (VOID *)PcdGet64(KernelProtocolAddress);
-    EFI_DTB_EXTN_PROTOCOL *DTBExtnProtocol = (VOID *)PcdGet64(XBLDTProtocolAddress);
+    UINTN SchedIntf=0;
+    UINTN DTBExtnProtocol=0;
 
+    InitProtocolFinder(&SchedIntf, &DTBExtnProtocol);
     BuildMemHobForFv(EFI_HOB_TYPE_FV2);
     BuildGuidDataHob(
         &gEfiInfoBlkHobGuid, &InfoBlkAddress, sizeof(InfoBlkAddress));
     BuildGuidDataHob(&gEfiShLibHobGuid, &ShLibAddress, sizeof(ShLibAddress));
     BuildGuidDataHob(&gFvDecompressHobGuid, &Data3, sizeof(Data3));
-    BuildGuidDataHob(&gEfiSchedIntfGuid, &SchedIntf, sizeof(SchedIntf));            // Schedule Interface
-    BuildGuidDataHob(&gEfiSecDtbGuid, &DTBExtnProtocol, sizeof(DTBExtnProtocol));   // XBL DT
+    BuildGuidDataHob(&gEfiSchedIntfGuid, &SchedIntf, sizeof(SchedIntf));
+    BuildGuidDataHob(&gEfiSecDtbGuid, &DTBExtnProtocol, sizeof(DTBExtnProtocol));
 
     initialized = 1;
   }
@@ -201,4 +177,3 @@ PlatformPeim(VOID)
 
   return EFI_SUCCESS;
 }
-

@@ -1,5 +1,5 @@
 #!/bin/bash
-echo hello
+echo hello docker
 
 # Replace APT Source
 #sed -i 's/archive.ubuntu.com/mirrors.aliyun.com/g' /etc/apt/sources.list
@@ -7,9 +7,9 @@ echo hello
 
 # Install Dependence
 cd
-apt update -y && apt -y upgrade
-apt -y install sudo python3-venv pip git mono-devel build-essential nuget build-essential uuid-dev iasl nasm gcc-aarch64-linux-gnu python3.10 python3-distutils python3-git python3-pip gettext locales gnupg ca-certificates python3-venv git git-core clang llvm curl lld
-./setup_env.sh
+apt update
+apt -y install sudo
+./build_setup.sh
 pip install --upgrade -r pip-requirements.txt
 source SurfaceDuo/bin/activate
 git config --global --add safe.directory '*'

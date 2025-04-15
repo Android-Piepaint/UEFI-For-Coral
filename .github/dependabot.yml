@@ -5,6 +5,7 @@
 
 version: 2
 updates:
+  # Submodules Update
   - package-ecosystem: "gitsubmodule"
     directory: "/"
     schedule:
@@ -13,6 +14,13 @@ updates:
       - "type:submodules"
       - "type:dependencies"
 
-
-
-
+  # Pip requirement update
+  - package-ecosystem: "pip"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    commit-message:
+      prefix: "pip-requirement"
+    labels:
+      - "language:python"
+      - "type:dependencies"
