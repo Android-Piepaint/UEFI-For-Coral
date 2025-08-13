@@ -8,12 +8,10 @@ echo CI Environment Setup.
 # Install Dependence
 #apt -y remove firefox # uninstall firefox before upgradeing.
 ./build_setup.sh
-
-# Choose python3.11 as default python3.
-sudo update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.10 1
-sudo update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.11 2
-
 pip install --upgrade -r pip-requirements.txt
+
 #source SurfaceDuo/bin/activate
 git config --global --add safe.directory '*'
 
+# Initialize mu uefi build env
+./build_uefi.py --init
